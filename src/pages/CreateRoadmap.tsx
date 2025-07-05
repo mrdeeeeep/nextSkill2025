@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { generateRoadmap } from "@/lib/openai";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,12 +10,33 @@ import { ArrowLeft } from "lucide-react";
 const CreateRoadmap = () => {
   const [title, setTitle] = useState("");
   const [preferences, setPreferences] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim()) {
-      navigate(`/roadmap?title=${encodeURIComponent(title)}&preferences=${encodeURIComponent(preferences)}`);
+    setError(null);
+    if (!title.trim()) return;
+    setLoading(true);
+    try {
+      let roadmap = await generateRoadmap({ title, preferences });
+      // Always coerce to array and assign unique id
+      if (!Array.isArray(roadmap)) {
+        roadmap = roadmap && typeof roadmap === 'object' ? [roadmap] : [];
+      }
+      roadmap = roadmap.map((item: any, idx: number) => ({
+        id: idx + 1,
+        title: String(item.title || ''),
+        description: String(item.description || ''),
+        duration: String(item.duration || ''),
+        topics: Array.isArray(item.topics) ? item.topics.map(String) : [],
+      }));
+      navigate(`/roadmap?title=${encodeURIComponent(title)}&preferences=${encodeURIComponent(preferences)}`, { state: { roadmap } });
+    } catch (err: any) {
+      setError(err.message || "Failed to generate roadmap.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,9 +100,13 @@ const CreateRoadmap = () => {
               <Button 
                 type="submit"
                 className="w-full bg-blue-500 hover:bg-blue-600 text-white py-5 text-lg font-light rounded-none transition-all duration-400 tracking-wider animate-soft-hover"
+                disabled={loading}
               >
-                Generate My Roadmap
+                {loading ? "Generating..." : "Generate My Roadmap"}
               </Button>
+              {error && (
+                <div className="text-red-500 text-center mt-4">{error}</div>
+              )}
             </div>
           </form>
         </div>

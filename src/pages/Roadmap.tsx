@@ -36,37 +36,30 @@ const Roadmap = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Sample roadmap data - in a real app, this would be generated based on the title and preferences
-  const roadmapData: RoadmapItem[] = [
-    {
-      id: 1,
-      title: "Fundamental HTML CSS",
-      description: "Learn the basic blocks of HTML and CSS. Master HTML5 and CSS3.",
-      duration: "3-5 WEEKS",
-      topics: ["DIV, HEAD, TAGS,", "Styles, Flexbox, Gridbox,", "References"]
-    },
-    {
-      id: 2,
-      title: "JavaScript Basic",
-      description: "Learn the basic blocks of HTML and CSS. Master HTML5 and CSS3. Get comfortable with functions, variables, and learn to connect HTML CSS with JavaScript",
-      duration: "3-5 WEEKS",
-      topics: ["DIV, HEAD, TAGS,", "Styles, Flexbox, Gridbox,", "References", "Variables, Functions, for loops, conditional statements", "let, get", "POST, GET, DELETED,", "CRUD"]
-    },
-    {
-      id: 3,
-      title: "React Framework",
-      description: "Learn the basic blocks of HTML and CSS. Master HTML5 and CSS3.",
-      duration: "3-5 WEEKS",
-      topics: ["DIV, HEAD, TAGS,", "Styles, Flexbox, Gridbox,", "References"]
-    },
-    {
-      id: 4,
-      title: "Node.js Backend",
-      description: "Learn the basic blocks of HTML and CSS. Master HTML5 and CSS3. Get comfortable with functions, variables, and learn to connect HTML CSS with JavaScript",
-      duration: "3-5 WEEKS",
-      topics: ["DIV, HEAD, TAGS,", "Styles, Flexbox, Gridbox,", "References", "Variables, Functions, for loops, conditional statements", "let, get", "POST, GET, DELETED,", "CRUD"]
+  // Use roadmap data from navigation state, fallback to empty array
+  // @ts-ignore
+  const location = window.location || {};
+  // Try to get roadmap from navigation state (react-router-dom)
+  let roadmapData: RoadmapItem[] = [];
+  try {
+    // Debug: log roadmapData and ids
+    setTimeout(() => {
+      console.log('roadmapData:', roadmapData);
+      roadmapData.forEach((item, idx) => {
+        console.log(`Item ${idx}: id =`, item.id);
+      });
+    }, 0);
+    // For react-router-dom v6, use window.history.state or location.state if available
+    // This code assumes the roadmap is passed in navigation state
+    // You may need to adjust based on your router setup
+    // eslint-disable-next-line
+    const navState = (window.history.state && window.history.state.usr) || (location.state);
+    if (navState && navState.roadmap) {
+      roadmapData = navState.roadmap;
     }
-  ];
+  } catch (e) {
+    roadmapData = [];
+  }
 
   return (
     <div className="min-h-screen bg-neutral-50 font-inter">
@@ -108,7 +101,7 @@ const Roadmap = () => {
             {/* Roadmap Items */}
             <div className="space-y-12">
               {roadmapData.map((item, index) => (
-                <div key={item.id} className="relative flex items-start animate-fade-in" style={{animationDelay: `${0.4 + index * 0.2}s`, animationFillMode: 'both'}}>
+                <div key={item.id ?? index} className="relative flex items-start animate-fade-in" style={{animationDelay: `${0.4 + index * 0.2}s`, animationFillMode: 'both'}}>
                   {/* Timeline Dot */}
                   <div className={`absolute left-8 w-5 h-5 rounded-full border-2 transition-all duration-500 z-10 ${
                     hoveredItem === item.id 
