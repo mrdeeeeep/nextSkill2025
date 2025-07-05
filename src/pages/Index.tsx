@@ -16,14 +16,14 @@ const Index = () => {
           {/* Social Icons */}
           <div className="flex items-center gap-4">
             <button
-              onClick={() => handleSocialClick('https://github.com')}
+              onClick={() => handleSocialClick('https://github.com/mrdeeeeep/nextSkill2025.git')}
               className="p-2 text-neutral-800 hover:text-neutral-600 transition-colors duration-300"
               aria-label="GitHub"
             >
               <Github size={20} strokeWidth={1.5} />
             </button>
             <button
-              onClick={() => handleSocialClick('https://linkedin.com')}
+              onClick={() => handleSocialClick('https://www.linkedin.com/in/deep-baro-863386239/')}
               className="p-2 text-neutral-800 hover:text-neutral-600 transition-colors duration-300"
               aria-label="LinkedIn"
             >

@@ -32,19 +32,16 @@ const CreateRoadmap = () => {
       </header>
 
       {/* Main Content */}
-      <main className="px-8 py-20">
+      <main className="px-0 py-20">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16 animate-fade-in" style={{animationDelay: '0.2s', animationFillMode: 'both'}}>
-            <h1 className="text-6xl font-ultra-light text-slate-800 mb-12 tracking-extra-wide leading-tight">
-              CREATE YOUR
+            <h1 className="text-3xl font-ultra-light text-slate-800 mb-12 tracking-extra-wide leading-tight">
+              ENTER YOUR CUSTOM 
               <br />
               <span className="text-blue-500 font-light">
-                LEARNING ROADMAP
+                PROMPT
               </span>
             </h1>
-            <p className="text-xl text-slate-500 font-light tracking-wide leading-relaxed">
-              Tell us what you want to learn and we'll create a personalized roadmap for you
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-12">
@@ -77,7 +74,7 @@ const CreateRoadmap = () => {
               />
             </div>
 
-            <div className="pt-12 animate-fade-in" style={{animationDelay: '0.8s', animationFillMode: 'both'}}>
+            <div className="pt-37 animate-fade-in" style={{animationDelay: '0.8s', animationFillMode: 'both'}}>
               <Button 
                 type="submit"
                 className="w-full bg-blue-500 hover:bg-blue-600 text-white py-5 text-lg font-light rounded-none transition-all duration-400 tracking-wider animate-soft-hover"
